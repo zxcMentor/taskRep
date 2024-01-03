@@ -1,0 +1,124 @@
+basePath: /
+definitions:
+  handler.CreateUserRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  user.User:
+    properties:
+      created_at:
+        type: string
+      email:
+        type: string
+      id:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: This is a sample server.
+  title: API Title
+  version: "1.0"
+paths:
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a list of users
+      parameters:
+      - description: Limit the number of results
+        in: query
+        name: limit
+        type: integer
+      - description: Skip a number of results
+        in: query
+        name: offset
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: List users
+      tags:
+      - Users
+    post:
+      consumes:
+      - application/json
+      description: create user
+      parameters:
+      - description: User payload
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/handler.CreateUserRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created successfully
+          schema:
+            additionalProperties: true
+            type: object
+      summary: Create
+    put:
+      consumes:
+      - application/json
+      description: Update a user's details
+      parameters:
+      - description: User details
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/user.User'
+      produces:
+      - application/json
+      responses: {}
+      summary: Update a user
+      tags:
+      - Users
+  /users/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a user by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Delete a user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: Retrieve a user by their unique ID
+      parameters:
+      - description: User ID
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses: {}
+      summary: Get a user by ID
+      tags:
+      - Users
+schemes:
+- http
+swagger: "2.0"

@@ -9,8 +9,8 @@ RUN go mod download
 
 COPY . .
 
-WORKDIR /app/cmd/server
-RUN CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o /app/main .
+WORKDIR /app/cmd
+RUN go build -o /app/main .
 
 FROM alpine:latest
 RUN apk --no-cache add ca-certificates

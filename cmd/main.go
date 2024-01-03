@@ -1,14 +1,24 @@
 package main
 
 import (
+	_ "awesomeProject/docs"
 	"awesomeProject/internal/handler"
 	"awesomeProject/internal/repository"
 	"awesomeProject/router"
 	"database/sql"
 	_ "github.com/lib/pq"
+	httpSwagger "github.com/swaggo/http-swagger"
 	"log"
 	"net/http"
 )
+
+// @title API Title
+// @version 1.0
+// @description This is a sample server.
+
+// @host localhost:8080
+// @BasePath /
+// @schemes http
 
 func main() {
 	dbHost := "db"
@@ -35,6 +45,9 @@ func main() {
 	userHandler := handler.NewUserHandler(userRepository)
 
 	r := router.SetupRouter(userHandler)
+	http.Handle("/swagger/", httpSwagger.Handler(
+		httpSwagger.URL("/docs/swagger.json"),
+	))
 
 	log.Println("Starting server on port 8080...")
 	if err := http.ListenAndServe(":8080", r); err != nil {

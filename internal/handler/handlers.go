@@ -25,6 +25,13 @@ type CreateUserRequest struct {
 	Password string `json:"password"`
 }
 
+// @Summary Create
+// @Description create user
+// @Accept json
+// @Produce json
+// @Param input body CreateUserRequest true "User payload"
+// @Success 201 {object} map[string]interface{} "User created successfully"
+// @Router /users [post]
 func (u *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 	var createUserReq CreateUserRequest
 
@@ -54,6 +61,14 @@ func (u *UserHandler) Create(w http.ResponseWriter, r *http.Request) {
 	}
 	json.NewEncoder(w).Encode(response)
 }
+
+// @Summary Get a user by ID
+// @Description Retrieve a user by their unique ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Router /users/{id} [get]
 func (u *UserHandler) GetById(w http.ResponseWriter, r *http.Request) {
 	userID := chi.URLParam(r, "id")
 
@@ -67,6 +82,14 @@ func (u *UserHandler) GetById(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 	json.NewEncoder(w).Encode(user)
 }
+
+// @Summary Update a user
+// @Description Update a user's details
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param user body user.User true "User details"
+// @Router /users [put]
 func (u *UserHandler) Update(w http.ResponseWriter, r *http.Request) {
 	var updatedUser user.User
 	if err := json.NewDecoder(r.Body).Decode(&updatedUser); err != nil {
@@ -81,6 +104,14 @@ func (u *UserHandler) Update(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusOK)
 }
+
+// @Summary Delete a user
+// @Description Delete a user by their unique ID
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param id path int true "User ID"
+// @Router /users/{id} [delete]
 func (u *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
@@ -92,6 +123,15 @@ func (u *UserHandler) Delete(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 
 }
+
+// @Summary List users
+// @Description Retrieve a list of users
+// @Tags Users
+// @Accept json
+// @Produce json
+// @Param limit query int false "Limit the number of results"
+// @Param offset query int false "Skip a number of results"
+// @Router /users [get]
 func (u *UserHandler) List(w http.ResponseWriter, r *http.Request) {
 	limitStr := r.URL.Query().Get("limit")
 	offsetStr := r.URL.Query().Get("offset")
